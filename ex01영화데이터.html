@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id = "mv"></div>
+    <!-- <table id = "tb">
+        <tr>
+            <th>순위</th>
+            <th>영화제목</th>
+            <th>개봉일자</th>
+        </tr>
+    </table> -->
+    <br>
+    <button onclick="getData()">영화 데이터 요청</button>
+
+    <script>
+                
+        function getData(){
+            $.ajax({
+                // url -> 내가 가지고 올 데이터 주소
+                url : 'https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=61be004f2d86a60beccb34f19011ccc1&targetDt=20220501',
+                // type -> 쿼리스트링? get, jsp에서 post로 설정? post
+                type : 'get', 
+                // data : 영화진흥위원회에 보내줄 데이터가 없으므로 생략
+                success : function(result){
+                    // 성공했다면? 내 데이터는 어디 있을까? -> 매개변수 안에 작성
+
+                    // 테이블 생성
+                    $('#mv').append('<table>');
+                        // 1 tr
+                        $('#mv').append('<tr>')
+                            // th 생성
+                            $('#mv').append('<th width = "50px">순위</th>')
+                            $('#mv').append('<th width = "350px">영화제목</th>')
+                            $('#mv').append('<th>개봉일자</th>')
+                        $('#mv').append('</tr>')
+                        
+                        // 2 tr
+                        for(let i = 0; i < 10; i++){
+                            $('#mv').append('<tr>')
+                                // td 순위
+                                $('#mv').append('<td>'+result.boxOfficeResult.weeklyBoxOfficeList[i].rank+'</td>')
+                                // td 영화제목
+                                $('#mv').append('<td>'+result.boxOfficeResult.weeklyBoxOfficeList[i].movieNm+'</td>')
+                                // td 개봉일자
+                                $('#mv').append('<td>'+result.boxOfficeResult.weeklyBoxOfficeList[i].openDt+'</td>')
+                            $('#mv').append('</tr>')
+                        }
+                    $('#mv').append('</table>')
+
+                },
+                error : function(){
+                    // 데이터 불러오기에 실패했다면?
+                    alert('error!!')
+                }
+            })
+        }
+    </script>
+</body>
+</html>
